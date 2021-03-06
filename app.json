@@ -27,6 +27,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "The purpose of this web app is to provide users with a tool that allows them to know the nutritional information for everyday consumer products."
   }
 }

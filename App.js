@@ -3,9 +3,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
+  console.log('test');
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text style={styles.text}>Stema App</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -17,5 +18,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    color:'green'
   },
+  text:{
+    color:'green',
+    fontStyle:'italic',
+    fontWeight:'bold',
+    
+  }
 });
+
