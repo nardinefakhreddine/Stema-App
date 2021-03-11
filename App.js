@@ -1,45 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, {Component} from 'react';
+import { StyleSheet,Text,View,Dimensions, Button } from 'react-native';
+import * as Permissions from 'expo-permissions';
+import { BarCodeScanner, Constants } from 'expo-barcode-scanner';
 
-export default function App() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+export default class App extends Component{
 
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
-
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+  state = {
+    showBarCodeScanner:false,
+    CodeData:null,
+   
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+ 
+
+
+  barCodeScanned = ({ data }) => {
+    //Access the Data
+       this.setState({
+        showBarCodeScanner:false,
+         CodeData:data
+       });
   }
 
-  return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-    </View>
-  );
-}
+  btnCameraClicked=()=>{
+    const { status } = Permissions.askAsync(Permissions.CAMERA);
+    this.setState({
+      showBarCodeScanner:true,
+      CodeData:null,
+    });
+  }
+   componentDidMount() {
+    // Ask for camera permission
+    this.btnCameraClicked();
+  }
+
+  render(){
+   
+    
+      return(
+        <View style={styles.container}>
+           <Button title="Bar Code Scanner" onPress={this.btnCameraClicked}/>
+
+           <View>
+             {this.state.showBarCodeScanner===true?
+            <BarCodeScanner
+            onBarCodeScanned = {this.barCodeScanned }
+            style = {{
+                height:  DEVICE_HEIGHT/1.1,
+                width: DEVICE_WIDTH,
+            }}
+            >
+            
+            </BarCodeScanner>:
+             <Text>{this.state.CodeData}</Text>
+  
+          }
+           </View>
+
+
+
+        </View> 
+
+
+      );
+    }
+  }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
+    backgroundColor: '#fff',
+    alignItems: 'center',
     justifyContent: 'center',
+    paddingTop:Constants.statusBarHeight,
+
   },
 });
