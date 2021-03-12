@@ -1,80 +1,114 @@
-import React, {Component} from 'react';
-import { StyleSheet,Text,View,Dimensions, Button } from 'react-native';
-import * as Permissions from 'expo-permissions';
-import { BarCodeScanner, Constants } from 'expo-barcode-scanner';
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
+import React from "react";
+import { StyleSheet, View,Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator,DrawerContentScrollView,DrawerItem } from '@react-navigation/drawer';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+import { Drawer } from "react-native-paper";
+import { Container, Footer, Right,Left,Header,Content,Body, Button,Title,Icon } from "native-base";
+import { Home } from "./Screens/Home";
+import SideBar from "./Screens/customDrawer";
+import { DrawerActions } from '@react-navigation/routers';
+function HomeScreen({navigation}){
+  return (
+<Container>
+  <Header>
+    <Left style={{flex:1}}>
+        <Button transparent  onPress={()=>navigation.dispatch(DrawerActions.openDrawer)}>
+        <Icon name="menu" style={{fontSize:40,color:'white'}}/>
 
-export default class App extends Component{
+        </Button>
+   </Left>
+    <Body  style={{flex:1 ,alignItems:'center'}}><Title>Stema</Title></Body>
+    <Right  style={{flex:1}}></Right>
+  </Header>
+  <Content
+  contentContainerStyle={{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center'
+  }}
+  >
+<Text>Scores</Text>
+  </Content>
+  <Footer></Footer>
+</Container>
 
-  state = {
-    showBarCodeScanner:false,
-    CodeData:null,
-   
+  )
+}
+function ProductsScreen(){
+  return (
+<Container>
+  <Header >
+    <Left style={{flex:0.1}}></Left>
+    <Body  style={{flex:1 ,alignItems:'center'}}><Title>Profile</Title></Body>
+    <Right  style={{flex:0.1}}></Right>
+  </Header>
+  <Content 
+  contentContainerStyle={{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center'
+  }}>
+<Text>Products</Text>
+  </Content>
+  <Footer></Footer>
+</Container>
+
+  )
+}
+
+
+
+
+export default function App() {
+
+  const Drawr=createDrawerNavigator();
+
+  const AppDrawer=()=>{
+   return( <Drawr.Navigator drawerContent={props=><SideBar {...props}/>}>
+      <Drawr.Screen name="Home" component={HomeScreen} 
+      options={{
+       drawerIcon:({color,size})=>(<Icon name="home" style={{fontSize:size,color:color}}/>)
+      }}/>
+      <Drawr.Screen name="Products" component={ProductsScreen}
+      options={{
+        drawerIcon:({color,size})=>(<Icon name="home" style={{fontSize:size,color:color}}/>)
+       }}/>
+    </Drawr.Navigator>
+   )
   }
+
+  return (
  
-
-
-  barCodeScanned = ({ data }) => {
-    //Access the Data
-       this.setState({
-        showBarCodeScanner:false,
-         CodeData:data
-       });
-  }
-
-  btnCameraClicked=()=>{
-    const { status } = Permissions.askAsync(Permissions.CAMERA);
-    this.setState({
-      showBarCodeScanner:true,
-      CodeData:null,
-    });
-  }
-   componentDidMount() {
-    // Ask for camera permission
-    this.btnCameraClicked();
-  }
-
-  render(){
-   
-    
-      return(
-        <View style={styles.container}>
-           <Button title="Bar Code Scanner" onPress={this.btnCameraClicked}/>
-
-           <View>
-             {this.state.showBarCodeScanner===true?
-            <BarCodeScanner
-            onBarCodeScanned = {this.barCodeScanned }
-            style = {{
-                height:  DEVICE_HEIGHT/1.1,
-                width: DEVICE_WIDTH,
-            }}
-            >
-            
-            </BarCodeScanner>:
-             <Text>{this.state.CodeData}</Text>
+   <NavigationContainer>
+     <AppDrawer/>
+   </NavigationContainer>
   
-          }
-           </View>
+  );
+}
 
-
-
-        </View> 
-
-
-      );
-    }
-  }
-
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop:Constants.statusBarHeight,
-
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
