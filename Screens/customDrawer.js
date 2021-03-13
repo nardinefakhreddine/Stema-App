@@ -2,6 +2,7 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navi
 import React from 'react';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import Animated from 'react-native-reanimated';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { Button, Container, Content, Footer, Header, Right,Icon, ListItem, Left, Thumbnail, Body,Text,H3,List } from 'native-base';
 import { DrawerActions } from '@react-navigation/routers';
@@ -27,10 +28,10 @@ return(
 <Content contentContainerStyle={{flex:1}}>
     <ListItem thumbnail>
         <Left>
-        <Thumbnail  source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/1200px-Flag_of_Turkey.svg.png' }} />
+        <Thumbnail  source={require('../assets/logo-stema.png')} />
         </Left>
         <Body>
-       <H3>Nadine</H3>
+       <H3>For Good Health</H3>
         <Text note>Nutrition</Text>
     </Body>
     </ListItem>
