@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, View,Text,Image ,TouchableOpacity,TextInput} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
 import { createDrawerNavigator,DrawerContentScrollView,DrawerItem } from '@react-navigation/drawer';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Drawer } from "react-native-paper";
@@ -11,6 +12,10 @@ import { Home } from "./Screens/Home";
 import SideBar from "./Screens/customDrawer";
 import { DrawerActions } from '@react-navigation/routers';
 import { LinearGradient } from 'expo-linear-gradient';
+import ScanCode from "./Screens/Scan";
+import Details from "./Screens/details";
+const Stack=createStackNavigator();
+const MaterialBottomTabs=createMaterialBottomTabNavigator();
 function HomeScreen({navigation}){
   return (
 <Container>
@@ -60,7 +65,7 @@ function HomeScreen({navigation}){
            </Content>   
   </Content>
 
-  <Footer style={{backgroundColor:'#FF4500'}}></Footer>
+  <Footer style={{backgroundColor:'rgba(232, 72, 27, 1)'}}></Footer>
 
 </Container>
 
@@ -108,13 +113,29 @@ function ProductsScreen({navigation}){
 
 
 export default function App() {
+  createHomeStack=()=>{
+    return(
+<Stack.Navigator screenOptions={{
+    headerShown: false
+  }}>
+  <Stack.Screen name="home" component={HomeScreen}/>
+  <Stack.Screen name="scan" component={ScanCode}/>
+  <Stack.Screen name="details" component={Details}/>
+</Stack.Navigator>
+    )
+  }
 
   const Drawr=createDrawerNavigator();
 
   const AppDrawer=()=>{
-   return( <Drawr.Navigator drawerContent={props=><SideBar {...props}/>}>
-      <Drawr.Screen name="Home" component={HomeScreen} 
+   return( 
+  
+   
+   
+   <Drawr.Navigator drawerContent={props=><SideBar {...props}/>} drawerBackgroundColor="orange" drawerType="back" useNativeAnimations="true" >
+      <Drawr.Screen name="Home" children={createHomeStack}
       options={{
+     
        drawerIcon:({color,size})=>(<Icon name="home" style={{fontSize:size,color:color}}/>)
       }}/>
       <Drawr.Screen name="Products" component={ProductsScreen}
@@ -122,13 +143,14 @@ export default function App() {
         drawerIcon:({color,size})=>(<Icon name="home" style={{fontSize:size,color:color}}/>)
        }}/>
     </Drawr.Navigator>
+   
    )
   }
 
   return (
  
    <NavigationContainer>
-     <AppDrawer/>
+     <AppDrawer />
    </NavigationContainer>
   
   );

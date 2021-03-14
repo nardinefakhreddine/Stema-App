@@ -2,8 +2,8 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navi
 import React from 'react';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import Animated from 'react-native-reanimated';
-import LinearGradient from 'react-native-linear-gradient';
 
+import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Container, Content, Footer, Header, Right,Icon, ListItem, Left, Thumbnail, Body,Text,H3,List } from 'native-base';
 import { DrawerActions } from '@react-navigation/routers';
 import { Switch } from 'react-native-gesture-handler';
@@ -14,8 +14,8 @@ function SideBar({ progress, ...props}){
     }
     );
 return(
- 
-    <Container>
+   
+    <Container style={{backgroundColor:'transparent'}}>
 <Header style={{backgroundColor:'whitesmoke',borderBottomWidth:0}}>
     <Right>
         <Button transparent  onPress={()=>props.navigation.dispatch(DrawerActions.closeDrawer)}>
@@ -35,15 +35,14 @@ return(
         <Text note>Nutrition</Text>
     </Body>
     </ListItem>
-   
+  
 <DrawerContentScrollView {...props}>
         <Animated.View  style={{ transform:[{translateX}] }}>
 
        
     <DrawerItemList {...props}/>
     
-    <DrawerItem 
-
+    <DrawerItem activeBackgroundColor="orange"
     label="Rate us"
     icon={
         ({color,size})=>(<Icon name="star" style={{fontSize:size,color:color}}/>)
@@ -55,6 +54,7 @@ onPress={()=>props.navigation.navigate('Home')}
   
     </Animated.View>
 </DrawerContentScrollView>
+
 <List>
     <ListItem>
         <Body>
