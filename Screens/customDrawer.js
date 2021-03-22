@@ -2,8 +2,6 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navi
 import React from 'react';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import Animated from 'react-native-reanimated';
-
-import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Container, Content, Footer, Header, Right,Icon, ListItem, Left, Thumbnail, Body,Text,H3,List } from 'native-base';
 import { DrawerActions } from '@react-navigation/routers';
 import { Switch } from 'react-native-gesture-handler';

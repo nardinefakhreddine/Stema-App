@@ -1,99 +1,68 @@
 import React, {Component} from 'react';
-import { StyleSheet,Text,View,Dimensions, Button ,Image,TextInput,TouchableOpacity,FlatList} from 'react-native';
+import { StyleSheet,Text,View,Dimensions, Button ,Image,TextInput,TouchableOpacity,FlatList, Alert} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner, Constants } from 'expo-barcode-scanner';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DrawerActions } from '@react-navigation/routers';
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
 import { Container, Footer, Right,Left,Header,Content,Body, Title,Icon ,H3} from "native-base";
 
-
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
  function getTextStyle(score) {
   if(score=='A'){
-    return {color:'green'}
+    return {color:'green',fontSize:15}
   }else if(score=='B'){
-    return{color:'grey'}
+    return{color:'grey',fontSize:15}
   }else if(score=='C'){
-    return {color:'yellow'}
+    return {color:'yellow',fontSize:15}
   }else if(score=='D'){
-    return {color:'orange'}
+    return {color:'orange',fontSize:15}
   }else if(score=='E'){
-    return {color:'tomate'}
+    return {color:'tomate',fontSize:15}
   }
 }
 
 
-
 function Additive({name}){
-
   return (
-
    <View>
-  
       <Text> Name :{name}</Text>
-      
- 
     </View>
-    
   )
 }
 function Allergy({name}){
-
   return (
-
    <View>
-  
       <Text> Name :{name}</Text>
-      
- 
     </View>
-    
   )
 }
 function Nutri({name,scale}){
-
   return (
-
    <View>
-  
       <Text> Name :{name}</Text>
       <Text>Scale:{scale}</Text>
- 
     </View>
-    
   )
 }
-
-
-
-
-
 
 
 
 function Item({barecode,name,score,scoreInfo,brand,description}){
-
-
-  
-
   return (
-
-
     <View>
+     <View style={{flex:1 , justifyContent:'center', alignItems:'center'}}><Text> <Image source={require('../assets/banana.jpg')} style={styles.Image} /></Text></View>
+      <Text style={getTextStyle(score)}> Score:{score} : {scoreInfo}</Text>
       <Text>BareCode:{barecode}</Text>
       <Text> Name :{name}</Text>
       <Text> Brand :{brand}</Text>
-      <Text> Description:{description}</Text>
-
-      <Text style={getTextStyle(score)}> Score:{score} : {scoreInfo}</Text>
-      
+      <Text> Description:{description}</Text>   
     </View>
-    
   )
 }
+
+
 export default class ScanCode extends Component{
   constructor(props) {
     super(props);
@@ -115,7 +84,7 @@ export default class ScanCode extends Component{
         showBarCodeScanner:false,
          CodeData:data
        });
-       axios.get(`http://192.168.1.106:8080/api/displayByBareCode/${data}`).then(
+       axios.get(`http://192.168.1.77:8000/api/displayByBareCode/${data}`).then(
          (response)=>{
            
           this.setState({
@@ -128,7 +97,7 @@ export default class ScanCode extends Component{
          }
        ).catch((e)=>{console.log(e)})
        
-     
+       
 
   }
 
@@ -143,23 +112,39 @@ export default class ScanCode extends Component{
     // Ask for camera permission
     this.btnCameraClicked();
   }
-
-  render(){
-   
-    
+  render(){ 
       return(
         <>
              {this.state.showBarCodeScanner===true?
             <BarCodeScanner
-            onBarCodeScanned = {this.barCodeScanned }
+            onBarCodeScanned = {this.barCodeScanned}
             style = {{
                 height:  DEVICE_HEIGHT/1.1,
                 width: DEVICE_WIDTH,
             }}
-            >
-            
+            >        
             </BarCodeScanner>:
             <View>
+<LinearGradient
+  colors={['rgba(18, 137, 74, 1)', 'rgba(252, 220, 89, 1)', 'rgba(251, 180, 66, 1)' , 'rgba(232, 72, 27, 1)']}
+  start={{x:0.0 , y:0.0}}
+  end={{x:1.0,y:0.0}}
+  useAngle={true}
+  angle={90}
+  angleCenter={{x:0.5,y:0.5}}
+  style={styles.header}
+  >
+    <Header style={{backgroundColor:'transparent'}}>
+    <Left style={{flex:1.5}}>
+        <TouchableOpacity transparent  onPress={()=>this.props.navigation.navigate('home')}>
+        <Icon name="home" style={{fontSize:40,color:'white'}}/>
+
+        </TouchableOpacity>
+   </Left>
+    <Body  style={{flex:1.5 ,alignItems:'center'}}><Image source={ require('../assets/Stema-in-header.png')}/></Body>
+    <Right  style={{flex:1.5 }}><Image source={require('../assets/nutriotionst-image.png')}/></Right>
+  </Header>
+</LinearGradient>
    <FlatList
     data={this.state.Data}
    renderItem={({item})=>(
@@ -169,55 +154,37 @@ export default class ScanCode extends Component{
       scoreInfo={item.scoreInfo}
         brand={item.brand}
       description={item.description}/>
-
    )
-  
-  
   }
    />
-
-
-   <H3>Nutri -Scales</H3>
-
+   <H3 style={styles.titleInfo}>Nutri -Scales</H3>
    <FlatList
    data={this.state.nutri}
    renderItem={
 ({item})=>(
 <Nutri  name={item.name}  scale={item.scale}/>
-
-)
-
-   }
+)}
    />
-   <H3>Allergies</H3>
+   <H3 style={styles.titleInfo}>Allergies</H3>
    <FlatList
    data={this.state.allergies}
    renderItem={
 ({item})=>(
 <Allergy name={item.name}  />
-
-)
-
-   }
+)}
    />
-     <H3>Additives</H3>
+    <H3 style={styles.titleInfo}>Additives</H3>
    <FlatList
    data={this.state.additives}
    renderItem={
 ({item})=>(
 <Allergy name={item.name}  />
-
-)
-
-   }
+)}
    />
-   <Button title="back to home" onPress={()=>this.props.navigation.navigate('home')}></Button>
-    </View>
+ </View>
           }
-           
+       
        </>
-
-
       );
     }
   }
@@ -254,6 +221,16 @@ export default class ScanCode extends Component{
      backgroundColor:'rgb(18, 137, 74)',
      padding:5
      
+    },
+    Image:{
+    width:100,
+    height:150,
+   
+   
+    },
+    titleInfo:{
+      color:'tomato',
+      fontStyle:'normal'
     }
   });
   
