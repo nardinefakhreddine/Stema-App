@@ -1,4 +1,5 @@
 import React from 'react';
+import { H3,H1,H2 } from 'native-base';
 import { View,Text,TouchableOpacity} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 /**useNavigation is a hook which gives access to navigation object.
@@ -41,7 +42,7 @@ useNavigation() returns the navigation prop of the screen it's inside. */
       
     <TouchableOpacity onPress={()=>navigation.navigate('Details',{ID:id})}>
     <View  style={getScoreStyle({score})}>
-       <Text style={ScoreStyle({score})}>{score} :</Text>
+       <Text style={{flex:1,alignItems:'flex-start',color:'#006400',fontWeight:'bold'}} ><H1 style={ScoreStyle({score})}>{score} </H1></Text>
      <Text style={{ flex:1,alignItems:'center'}}>{name} </Text>
      <Text style={{ flex:1,alignItems:'flex-end'}}>{description}</Text>
       

@@ -16,11 +16,11 @@ export default function ProductsScreen({navigation}){
     
     useEffect(
       ()=>{
-        axios.get(`http://192.168.1.77:8000/api/getAll`).then(
+        axios.get(`http://192.168.1.106:8000/api/getAll`).then(
           (response)=>{
-          console.log(response.data);
-          setData(response.data);
-          setFilteredArray(response.data);
+          console.log(response.data.data);
+          setData(response.data.data);
+          setFilteredArray(response.data.data);
           }
         ).catch(
           (error)=>{
@@ -105,7 +105,7 @@ export default function ProductsScreen({navigation}){
     
     
       </Content>
-      <Footer style={{backgroundColor:'darkorange',color:'white'}}/>
+      <Footer style={{backgroundColor:'rgba(232, 72, 27, 1)'}}></Footer>
        
     </Container>
     
